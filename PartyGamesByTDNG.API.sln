@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyGamesByTDNG.API", "PartyGamesByTDNG.API\PartyGamesByTDNG.API.csproj", "{198F9BE4-E7F0-4978-9165-5DBA069F5F48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{198F9BE4-E7F0-4978-9165-5DBA069F5F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{198F9BE4-E7F0-4978-9165-5DBA069F5F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{198F9BE4-E7F0-4978-9165-5DBA069F5F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{198F9BE4-E7F0-4978-9165-5DBA069F5F48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A47638F-8113-4E15-8E0D-6ED366FF4822}
+	EndGlobalSection
+EndGlobal
