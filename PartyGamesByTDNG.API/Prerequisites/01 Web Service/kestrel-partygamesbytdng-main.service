@@ -1,14 +1,14 @@
 [Unit]
-Description=wERP Main Web API
+Description=Party Games by TDNG Main Web API
 
 [Service]
-WorkingDirectory=/webservices/werp
-ExecStart=/usr/share/dotnet/dotnet /webservices/werp/wERP_ML.dll
+WorkingDirectory=/webservices/partygamesbytdng
+ExecStart=/usr/share/dotnet/dotnet /webservices/partygamesbytdng/PartyGamesByTDNG.API.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
 KillSignal=SIGINT
-SyslogIdentifier=dotnet-wERP-main
+SyslogIdentifier=dotnet-partygamesbytdng-main
 User=root
 Environment=ASPNETCORE_ENVIRONMENT=Production
 

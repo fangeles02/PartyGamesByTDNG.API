@@ -6,8 +6,11 @@ mkdir webservices
 2. Go to webservices folder
 cd webservices
 
-3. Create directory werp
-mkdir werp
+--------------------
+If webservices folder already exist
+
+3. Create directory partygamesbytdng
+mkdir partygamesbytdng
 
 
 To delete all files and subdirectories of werp folder
@@ -18,7 +21,7 @@ rm -r /webservices/werp/*
 Transfer files via SCP
 on local computer
 
-scp -r <directory or folder to copy>/. root@thedotnetguy.com:/webservices/werp
+scp -r <directory or folder to copy>/. root@thedotnetguy.com:/webservices/partygamesbytdng
 
 ex:
-scp -r Release/. root@thedotnetguy.com:/webservices/werp
+scp -r Release/. root@thedotnetguy.com:/webservices/partygamesbytdng

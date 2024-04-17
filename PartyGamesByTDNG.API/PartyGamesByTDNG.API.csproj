@@ -17,15 +17,18 @@
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
-
   <ItemGroup>
-    <None Remove="Prerequisites\01 Web Service\enable_service.sh" />
-    <None Remove="Prerequisites\01 Web Service\kestrel-partygamesbytdng-main.service" />
-    <None Remove="Prerequisites\01 Web Service\disable_service.sh" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Prerequisites\01 Web Service\disable_service.sh" />
-    <EmbeddedResource Include="Prerequisites\01 Web Service\enable_service.sh" />
-    <EmbeddedResource Include="Prerequisites\01 Web Service\kestrel-partygamesbytdng-main.service" />
+    <None Update="Prerequisites\00 file and folder op\start here.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\01 Web Service\disable_service.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\01 Web Service\enable_service.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\01 Web Service\kestrel-partygamesbytdng-main.service">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

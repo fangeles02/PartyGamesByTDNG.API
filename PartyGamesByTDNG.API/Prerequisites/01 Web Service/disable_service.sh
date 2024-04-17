@@ -1,7 +1,7 @@
 echo "Stopping kestrel service (if running)";
-sudo systemctl stop kestrel-wERP-main.service;
+sudo systemctl stop kestrel-partygamesbytdng-main.service;
 echo "Disabling kestrel service";
-sudo systemctl disable kestrel-wERP-main.service;
+sudo systemctl disable kestrel-partygamesbytdng-main.service;
 echo "Removing existing files...";
-sudo rm /etc/systemd/system/kestrel-wERP-main.service;
+sudo rm /etc/systemd/system/kestrel-partygamesbytdng-main.service;
 sudo systemctl daemon-reload;
