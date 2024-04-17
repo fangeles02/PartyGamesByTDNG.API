@@ -1,1 +1,5 @@
-﻿Scaffold-DbContext 'Data Source=localhost\sqlexpress;Initial Catalog=PartyGamesByTDNG;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer -OutputDir DbContexts -force
+﻿Scaffold-DbContext 'Data Source=thedotnetguy.com;Initial Catalog=PartyGamesByTdngLive;Persist Security Info=True;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer -Context PartyGamesByTdngContext -OutputDir DbContexts -force
+
+
+Scaffold-DbContext 'Data Source=thedotnetguy.com;Initial Catalog=PartyGamesByTdngTest;Persist Security Info=True;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer -Context PartyGamesByTdngContext -OutputDir DbContexts -force
+

@@ -21,6 +21,8 @@ public partial class PartyGamesByTdngContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("Latin1_General_CS_AS");
+
         modelBuilder.Entity<HubGroup>(entity =>
         {
             entity.HasKey(e => e.RoomCode).HasName("PK_HubGroups_1");

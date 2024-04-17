@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using PartyGamesByTDNG.API;
 using PartyGamesByTDNG.API.DbContexts;
 using PartyGamesByTDNG.API.SignalRHubs;
+
+dbConnections environment = dbConnections.testserver;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +17,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PartyGamesByTdngContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("localhost"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(environment.ToString()));
 });
 builder.Services.AddSignalR();
 
