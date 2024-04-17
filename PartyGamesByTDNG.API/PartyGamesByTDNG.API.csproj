@@ -18,16 +18,28 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Prerequisites\00 file and folder op\start here.txt">
+    <None Update="Prerequisites\live\00 file and folder op\start here.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Prerequisites\01 Web Service\disable_service.sh">
+    <None Update="Prerequisites\live\01_webservice\disable_service.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Prerequisites\01 Web Service\enable_service.sh">
+    <None Update="Prerequisites\live\01_webservice\enable_service.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Prerequisites\01 Web Service\kestrel-partygamesbytdng-main.service">
+    <None Update="Prerequisites\live\01_webservice\kestrel-partygamesbytdng-live.service">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\test\00 file and folder op\start here.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\test\01_webservice\disable_service.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\test\01_webservice\enable_service.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Prerequisites\test\01_webservice\kestrel-partygamesbytdng-test.service">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

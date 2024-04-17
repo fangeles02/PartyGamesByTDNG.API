@@ -1,0 +1,27 @@
+Initial Setup
+
+1. Create directory "webservices" from the root folder
+mkdir webservices
+
+2. Go to webservices folder
+cd webservices
+
+--------------------
+If webservices folder already exist
+
+3. Create directory partygamesbytdngtest
+mkdir partygamesbytdngtest
+
+
+To delete all files and subdirectories of werp folder
+rm -r /webservices/partygamesbytdngtest/*
+
+=============================================
+
+Transfer files via SCP
+on local computer
+
+scp -r <directory or folder to copy>/. root@thedotnetguy.com:/webservices/partygamesbytdngtest
+
+ex:
+scp -r Release/. root@thedotnetguy.com:/webservices/partygamesbytdngtest
