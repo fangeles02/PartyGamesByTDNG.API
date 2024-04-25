@@ -15,6 +15,8 @@ public partial class HubGroup
 
     public string GameCode { get; set; } = null!;
 
+    public string Owner { get; set; } = null!;
+
     public DateTime DateCreated { get; set; }
 
     public DateTime LastActivity { get; set; }

@@ -36,6 +36,9 @@ public partial class PartyGamesByTdngContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.LastActivity).HasColumnType("datetime");
+            entity.Property(e => e.Owner)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.Passcode)
                 .HasMaxLength(50)
                 .IsUnicode(false);
