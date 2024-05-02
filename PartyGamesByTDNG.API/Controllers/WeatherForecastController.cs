@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PartyGamesByTDNG.API.Models.WeatherForecastModels;
+using PartyGamesByTDNG.API.Helper;
 
 namespace PartyGamesByTDNG.API.Controllers;
 [ApiController]
@@ -28,15 +29,5 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
-    }
-
-    [HttpPost("Sample")]
-    public SampleResponse SampleMethod(SampleRequest request)
-    {
-        return new SampleResponse
-        {
-            ResultCode = "OK",
-            ResultMessage = "API call is success. Return value is: " + request.Value
-    };
     }
 }
