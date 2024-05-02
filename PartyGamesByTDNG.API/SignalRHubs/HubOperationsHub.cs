@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using PartyGamesByTDNG.API.DbContexts;
 using PartyGamesByTDNG.API.Models.SignalR;
+using PartyGamesByTDNG.API.Helper;
+
 
 namespace PartyGamesByTDNG.API.SignalRHubs
 {
@@ -22,7 +24,7 @@ namespace PartyGamesByTDNG.API.SignalRHubs
             string return_method = "CreateGroupResponse";
 
             //token check
-            if (1 == 1)
+            if (TokenHelper.IsTokenValid(Token))
             {
                 string room_code = $"{Context.ConnectionId}-{GroupName.ToUpper().Replace(" ", "")}";
                 //this.
@@ -102,7 +104,7 @@ namespace PartyGamesByTDNG.API.SignalRHubs
         {
             string return_method = "CloseGroupResponse";
 
-            if (1 == 1)
+            if (TokenHelper.IsTokenValid(Token))
             {
                 string room_code = $"{Context.ConnectionId}-{GroupName.ToUpper().Replace(" ", "")}";
                 //remove from members
