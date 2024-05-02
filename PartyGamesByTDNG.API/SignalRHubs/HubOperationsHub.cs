@@ -18,6 +18,7 @@ namespace PartyGamesByTDNG.API.SignalRHubs
 
 
 
+        //operations by game master
 
         public async Task CreateGroup(string Token, string Username, string GroupName, string Passcode, string GameCode)
         {
@@ -62,6 +63,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                         });
 
                         await _partygamesbytdng.SaveChangesAsync();
+
+                        await Groups.AddToGroupAsync(Context.ConnectionId, room_code);
 
                         await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                         {
