@@ -171,9 +171,9 @@ namespace PartyGamesByTDNG.API.SignalRHubs
 
 
         //operations by Game member
-        public async Task JoinGame(string Token, string RoomName, string PassCode, string GameCode, string PlayerName)
+        public async Task JoinGroup(string Token, string RoomName, string PassCode, string GameCode, string PlayerName)
         {
-            string return_method = "JoinGameResponse";
+            string return_method = "JoinGroupResponse";
 
             if (TokenHelper.IsTokenValid(Token))
             {
