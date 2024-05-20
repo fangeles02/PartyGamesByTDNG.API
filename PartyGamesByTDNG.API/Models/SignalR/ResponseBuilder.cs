@@ -7,11 +7,12 @@ namespace PartyGamesByTDNG.API.Models.SignalR
     {
         public static string Build(Response response)
         {
-            return $"{(response.Result == ResponseCode.Success ? "OK" : "ERR")}~{response.ResultTitle ?? ""}~{response.ResultMessage}~{response.ResponseParams}";
+            return $"{response.Recipient.ToString()}~{(response.Result == ResponseCode.Success ? "OK" : "ERR")}~{response.ResultTitle ?? ""}~{response.ResultMessage}~{response.ResponseParams}";
         }
     }
     public class Response
     {
+        public required Recipient Recipient { get; set; }
 
         public required ResponseCode Result { get; set; }
 
@@ -25,6 +26,13 @@ namespace PartyGamesByTDNG.API.Models.SignalR
     {
         Success,
         Failed
+    }
+
+
+    public enum Recipient
+    {
+        Self,
+        Group
     }
 
 

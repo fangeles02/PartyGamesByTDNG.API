@@ -69,7 +69,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                         await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                         {
                             Result = ResponseCode.Success,
-                            ResultMessage = $"The game \"{GroupName}\" has been created successfuly."
+                            ResultMessage = $"The game \"{GroupName}\" has been created successfuly.",
+                            Recipient = Recipient.Self
                         }));
                     }
                     catch (Exception ex)
@@ -77,7 +78,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                         await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                         {
                             Result = ResponseCode.Failed,
-                            ResultMessage = $"Error: " + ex.Message
+                            ResultMessage = $"Error: " + ex.Message,
+                            Recipient = Recipient.Self
                         }));
                     }
 
@@ -87,7 +89,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                     await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                     {
                         Result = ResponseCode.Failed,
-                        ResultMessage = "Cannot create game. Game with the same name already exist."
+                        ResultMessage = "Cannot create game. Game with the same name already exist.",
+                        Recipient = Recipient.Self
                     }));
                 }
             }
@@ -97,7 +100,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                 {
                     Result = ResponseCode.Failed,
                     ResultTitle = "Invalid token",
-                    ResultMessage = "Invalid token"
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
                 }));
             }
         }
@@ -138,7 +142,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                     await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                     {
                         Result = ResponseCode.Success,
-                        ResultMessage = $"The game \"{GroupName}\" has been ended."
+                        ResultMessage = $"The game \"{GroupName}\" has been ended.",
+                        Recipient = Recipient.Self
                     }));
                 }
                 catch (Exception ex)
@@ -147,7 +152,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                     {
                         Result = ResponseCode.Failed,
                         ResultTitle = "Error",
-                        ResultMessage = ex.Message
+                        ResultMessage = ex.Message,
+                        Recipient = Recipient.Self
                     }));
                 }
 
@@ -159,7 +165,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                 {
                     Result = ResponseCode.Failed,
                     ResultTitle = "Invalid token",
-                    ResultMessage = "Invalid token"
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
                 }));
             }
         }
@@ -225,7 +232,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                             {
                                 Result = ResponseCode.Failed,
                                 ResultTitle = "Error",
-                                ResultMessage = ex.Message
+                                ResultMessage = "Sorry, you already joined this game.",
+                                Recipient = Recipient.Self
                             }));
                         }
 
@@ -237,7 +245,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                         {
                             Result = ResponseCode.Failed,
                             ResultTitle = "Error",
-                            ResultMessage = "Sorry, the current game does not accept new players as of now."
+                            ResultMessage = "Sorry, the current game does not accept new players as of now.",
+                            Recipient = Recipient.Self
                         }));
                     }
                 }
@@ -257,7 +266,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                 {
                     Result = ResponseCode.Failed,
                     ResultTitle = "Invalid token",
-                    ResultMessage = "Invalid token"
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
                 }));
             }
         }
