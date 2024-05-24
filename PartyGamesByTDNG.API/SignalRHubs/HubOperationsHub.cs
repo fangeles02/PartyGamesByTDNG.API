@@ -184,6 +184,74 @@ namespace PartyGamesByTDNG.API.SignalRHubs
 
 
 
+        public async Task KickMemberOut(string Token, string GroupName, string Passcode, string GameCode, string ConnectionId)
+        {
+            string return_method = "KickMemberOutResponse";
+
+            if (TokenHelper.IsTokenValid(Token))
+            {
+                string room_code = $"{Context.ConnectionId}-{GroupName.ToUpper().Replace(" ", "")}";
+                //remove from members
+
+                try
+                {
+                    //get player name 
+                    string s_player_name = _partygamesbytdng.HubMembers.Where(x => x.ConnectionId == ConnectionId).FirstOrDefault().Username;
+
+                    //send message to each member of group
+                    await Clients.Client(ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                    {
+                        Result = ResponseCode.Success,
+                        ResultTitle = "Success",
+                        ResultMessage = $"You have been removed from the game by the gamemaster.",
+                        Recipient = Recipient.Self
+                    }));
+
+                    //remove from hub group
+                    await Groups.RemoveFromGroupAsync(ConnectionId, room_code);
+
+                    //remove from db
+                    _partygamesbytdng.HubMembers.Remove(_partygamesbytdng.HubMembers.Where(x => x.ConnectionId == ConnectionId).FirstOrDefault());
+
+                    await _partygamesbytdng.SaveChangesAsync();
+
+                    await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                    {
+                        Result = ResponseCode.Success,
+                        ResultMessage = $"{s_player_name} has been removed.",
+                        ResponseParams = ConnectionId,
+                        Recipient = Recipient.Self
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                    {
+                        Result = ResponseCode.Failed,
+                        ResultTitle = "Error",
+                        ResultMessage = ex.Message,
+                        Recipient = Recipient.Self
+                    }));
+                }
+
+
+            }
+            else
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                {
+                    Result = ResponseCode.Failed,
+                    ResultTitle = "Invalid token",
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
+                }));
+            }
+        }
+
+
+
+
+
 
 
 
@@ -202,42 +270,78 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                     if (gamedata.IsOpen == 1)
                     {
 
-                        //add to members
-                        _partygamesbytdng.HubMembers.Add(new HubMember
+
+                        //check if already joined
+                        if (_partygamesbytdng.HubMembers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault() is null)
                         {
-                            ConnectionId = Context.ConnectionId,
-                            RoomCode = gamedata.RoomCode,
-                            LastActivity = DateTime.Now,
-                            Username = PlayerName.Trim()
-                        });
-
-                        gamedata.LastActivity = DateTime.Now;
-                        _partygamesbytdng.HubGroups.Update(gamedata);
-
-
-                        try
-                        {
-                            await _partygamesbytdng.SaveChangesAsync();
-
-                            await Groups.AddToGroupAsync(Context.ConnectionId, gamedata.RoomCode);
-
-                            await Clients.GroupExcept(gamedata.RoomName, Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                            //add to members
+                            _partygamesbytdng.HubMembers.Add(new HubMember
                             {
-                                Result = ResponseCode.Success,
-                                ResultTitle = "Success",
-                                ResultMessage = $"{PlayerName.Trim()} has joined the game",
-                                ResponseParams = $"{PlayerName.Trim()},{Context.ConnectionId}"
-                            }));
+                                ConnectionId = Context.ConnectionId,
+                                RoomCode = gamedata.RoomCode,
+                                LastActivity = DateTime.Now,
+                                Username = PlayerName.Trim()
+                            });
 
-                            await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                            gamedata.LastActivity = DateTime.Now;
+                            // _partygamesbytdng.HubGroups.Update(gamedata);
+
+
+                            try
                             {
-                                Result = ResponseCode.Success,
-                                ResultTitle = "Success",
-                                ResultMessage = $"You have joined the game \"{gamedata.RoomName}\""
-                            }));
+                                await _partygamesbytdng.SaveChangesAsync();
+
+                                await Groups.AddToGroupAsync(Context.ConnectionId, gamedata.RoomCode);
+
+
+                                var resss = _partygamesbytdng.HubMembers.Where(x => x.RoomCode == gamedata.RoomCode).Select(x => x.ConnectionId).ToList();
+
+                                foreach (string cur in resss)
+                                {
+                                    if (cur != Context.ConnectionId)
+                                    {
+                                        await Clients.Client(cur).SendAsync(return_method, ResponseBuilder.Build(new Response
+                                        {
+                                            Result = ResponseCode.Success,
+                                            ResultTitle = "Success",
+                                            ResultMessage = $"{PlayerName.Trim()} has joined the game",
+                                            ResponseParams = $"{PlayerName.Trim()},{Context.ConnectionId}",
+                                            Recipient = Recipient.Group
+                                        }));
+
+                                    }
+                                }
+
+                                // await Clients.GroupExcept(gamedata.RoomName, Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                                // {
+                                //     Result = ResponseCode.Success,
+                                //     ResultTitle = "Success",
+                                //     ResultMessage = $"{PlayerName.Trim()} has joined the game",
+                                //     ResponseParams = $"{PlayerName.Trim()},{Context.ConnectionId}"
+                                // }));
+
+                                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                                {
+                                    Result = ResponseCode.Success,
+                                    ResultTitle = "Success",
+                                    ResultMessage = $"You have joined the game \"{gamedata.RoomName}\"",
+                                    Recipient = Recipient.Self
+                                }));
+
+                            }
+                            catch (Exception ex)
+                            {
+                                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                                {
+                                    Result = ResponseCode.Failed,
+                                    ResultTitle = "Error",
+                                    ResultMessage = ex.Message,
+                                    Recipient = Recipient.Self
+                                }));
+                            }
 
                         }
-                        catch (Exception ex)
+                        else
                         {
                             await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                             {
@@ -267,9 +371,129 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                     {
                         Result = ResponseCode.Failed,
                         ResultTitle = "Error",
-                        ResultMessage = "Invalid game credentials"
+                        ResultMessage = "Invalid game credentials",
+                        Recipient = Recipient.Self
                     }));
                 }
+            }
+            else
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                {
+                    Result = ResponseCode.Failed,
+                    ResultTitle = "Invalid token",
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
+                }));
+            }
+        }
+
+
+
+        public async Task MemberLeavesGroup(string Token, string RoomName, string GameCode, string PlayerName)
+        {
+            string return_method = "MemberLeavesGroupResponse";
+
+            if (TokenHelper.IsTokenValid(Token))
+            {
+                try
+                {
+                    foreach (var cur in _partygamesbytdng.HubMembers.Where(m => m.RoomCode == GameCode))
+                    {
+                        if (cur.ConnectionId != Context.ConnectionId)
+                        {
+                            //send message to each member of group
+                            await Clients.Client(cur.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                            {
+                                Result = ResponseCode.Success,
+                                ResultTitle = "Success",
+                                ResultMessage = $"{PlayerName} has left the game",
+                                ResponseParams = Context.ConnectionId,
+                                Recipient = Recipient.Group
+                            }));
+                        }
+                    }
+
+
+
+                    //remove from hub group
+                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, GameCode);
+
+                    //remove from db
+                    _partygamesbytdng.HubMembers.Remove(_partygamesbytdng.HubMembers.Where(x => x.ConnectionId == Context.ConnectionId).FirstOrDefault());
+
+                    await _partygamesbytdng.SaveChangesAsync();
+
+                    await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                    {
+                        Result = ResponseCode.Success,
+                        ResultMessage = $"You left the game",
+                        Recipient = Recipient.Self
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                    {
+                        Result = ResponseCode.Failed,
+                        ResultTitle = "Error",
+                        ResultMessage = ex.Message,
+                        Recipient = Recipient.Self
+                    }));
+                }
+
+
+            }
+            else
+            {
+                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                {
+                    Result = ResponseCode.Failed,
+                    ResultTitle = "Invalid token",
+                    ResultMessage = "Invalid token",
+                    Recipient = Recipient.Self
+                }));
+            }
+        }
+
+
+
+        //Stop accepting member
+        public async Task StartGroupGame(string Token, string RoomName, string PassCode)
+        {
+            string return_method = "StartGroupGameResponse";
+
+            if (TokenHelper.IsTokenValid(Token))
+            {
+                var gamedata = _partygamesbytdng.HubGroups.Where(g => g.RoomName.ToUpper().Trim() == RoomName.ToUpper().Trim() && g.Passcode.Trim() == PassCode.Trim()).FirstOrDefault();
+
+                gamedata.IsOpen = 0;
+                await _partygamesbytdng.SaveChangesAsync();
+
+                await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                {
+                    Result = ResponseCode.Success,
+                    ResultTitle = "",
+                    ResultMessage = "You have stopped accepting players and started the game.",
+                    Recipient = Recipient.Self
+                }));
+
+                //send signal to each players
+                foreach (var cur in _partygamesbytdng.HubMembers.Where(x => x.RoomCode == gamedata.RoomCode))
+                {
+                    if (cur.ConnectionId != Context.ConnectionId)
+                    {
+                        await Clients.Client(cur.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                        {
+                            Result = ResponseCode.Success,
+                            ResultTitle = "",
+                            ResultMessage = "Gamemaster has initiated to start the game",
+                            Recipient = Recipient.Group
+                        }));
+                    }
+
+                }
+
             }
             else
             {
