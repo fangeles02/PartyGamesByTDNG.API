@@ -124,12 +124,21 @@ namespace PartyGamesByTDNG.API.SignalRHubs
                         //remove from hub group
                         if (cur.ConnectionId != Context.ConnectionId)
                         {
+                            //send message to each member of group
+                            await Clients.Client(cur.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
+                            {
+                                Result = ResponseCode.Success,
+                                ResultTitle = "Success",
+                                ResultMessage = $"The game \"{GroupName}\" has been ended by the gamemaster.",
+                                Recipient = Recipient.Group
+                            }));
+
                             await Groups.RemoveFromGroupAsync(cur.ConnectionId, room_code);
                         }
                     }
 
                     //remove from db
-                    _partygamesbytdng.HubMembers.Remove(_partygamesbytdng.HubMembers.Where(x => x.RoomCode == room_code).FirstOrDefault());
+                    _partygamesbytdng.HubMembers.RemoveRange(_partygamesbytdng.HubMembers.Where(x => x.RoomCode == room_code).ToList());
 
                     //remove from Hub groups
 
@@ -138,6 +147,8 @@ namespace PartyGamesByTDNG.API.SignalRHubs
 
                     //remove last member of hub group
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, room_code);
+
+                    await _partygamesbytdng.SaveChangesAsync();
 
                     await Clients.Client(Context.ConnectionId).SendAsync(return_method, ResponseBuilder.Build(new Response
                     {
