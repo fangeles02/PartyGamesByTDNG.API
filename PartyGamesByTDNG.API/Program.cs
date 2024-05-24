@@ -87,9 +87,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 var app = builder.Build();
+SettingName = app.Environment.EnvironmentName ?? "";
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "DebugRemoteDB" || app.Environment.EnvironmentName == "DebugLocalhostDB")
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -113,6 +114,7 @@ app.Run();
 
 public partial class Program
 {
+    public static String SettingName = "";
     public static string Issuer;
     public static string Key;
 }
