@@ -1,8 +1,3 @@
-﻿Scaffold-DbContext 'Data Source=thedotnetguy.com;Initial Catalog=PartyGamesByTdngLive;Persist Security Info=True;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer -Context PartyGamesByTdngContext -OutputDir DbContexts -force
-
-
-Scaffold-DbContext 'Data Source=thedotnetguy.com;Initial Catalog=PartyGamesByTdngTest;Persist Security Info=True;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer -Context PartyGamesByTdngContext -OutputDir DbContexts -force
-
-dotnet ef dbcontext scaffold 'Data Source=thedotnetguy.com;Initial Catalog=PartyGamesByTdngTest;Persist Security Info=True;User ID=fernan1995;Password=KW@B@37m012024;Trust Server Certificate=True' Microsoft.EntityFrameworkCore.SqlServer --context PartyGamesByTdngContext --context-dir DbContexts --output-dir DbContexts  --force
+﻿dotnet ef dbcontext scaffold "Name=ConnectionStrings:testserver" Microsoft.EntityFrameworkCore.SqlServer --context PartyGamesByTdngContext --context-dir DbContexts --output-dir DbContexts  --force
 
 
