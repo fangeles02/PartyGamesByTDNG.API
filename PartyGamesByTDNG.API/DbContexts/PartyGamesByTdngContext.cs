@@ -19,6 +19,9 @@ public partial class PartyGamesByTdngContext : DbContext
 
     public virtual DbSet<HubMember> HubMembers { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:testserver");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CS_AS");

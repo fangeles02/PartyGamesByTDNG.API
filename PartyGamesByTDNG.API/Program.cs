@@ -15,6 +15,8 @@ dbConnections environment = dbConnections.testserver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("appsettingssecrets.json", optional: true, reloadOnChange: true);
+
 // Add services to the container.
 
 builder.Services.AddControllers();
